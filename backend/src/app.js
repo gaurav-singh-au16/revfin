@@ -1,7 +1,11 @@
 const express = require('express')
 const db = require('./helpers/db.helper')
+const router = require('./routes')
 
 const app = express()
+
+app.use(express.json())
+app.use(router);
 
 // db connection
 db.sync({alter: true}).then(() => {
