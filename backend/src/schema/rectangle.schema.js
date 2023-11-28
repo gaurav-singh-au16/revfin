@@ -2,15 +2,19 @@ const { DataTypes } = require('sequelize');
 const db = require('../helpers/db.helper')
 
 
-const Template = db.define('templates', {
+const Rectangle = db.define('rectangles', {
     id: {
         type: DataTypes.BIGINT,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false,
     },
-    image: {
-        type: DataTypes.BLOB,
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    rectangle: {
+        type: DataTypes.STRING,
         allowNull: false
     }
 },
@@ -21,4 +25,4 @@ const Template = db.define('templates', {
     }
 )
 
-module.exports = Template
+module.exports = Rectangle
