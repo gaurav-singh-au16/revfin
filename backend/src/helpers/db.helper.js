@@ -10,7 +10,7 @@ dotenv.config()
 //     dialect: process.env.DB_DIALECT
 // });
 
-const db = new Sequelize(process.env.POSTGRES_URL+ "?sslmode=require", {
+const sequelize = new Sequelize(process.env.POSTGRES_URL+ "?sslmode=require", {
     dialectModule: require('pg')})
 
 module.exports = sequelize
