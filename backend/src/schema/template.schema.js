@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const db = require('../helpers/db.helper')
+const db = require('../helpers/db.helper');
+const Rectangle = require('./rectangle.schema');
 
 
 const Template = db.define('templates', {
@@ -10,7 +11,7 @@ const Template = db.define('templates', {
         allowNull: false,
     },
     image: {
-        type: DataTypes.BLOB,
+        type: DataTypes.BLOB('long'),
         allowNull: false
     }
 },
@@ -20,5 +21,9 @@ const Template = db.define('templates', {
         sequelize: db,
     }
 )
+
+Rectangle.belongsTo(Template, { foreignKey: 'template_id' })
+
+Template.hasMany(Rectangle, { foreignKey: 'template_id' })
 
 module.exports = Template

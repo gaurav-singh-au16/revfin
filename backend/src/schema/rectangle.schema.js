@@ -9,14 +9,34 @@ const Rectangle = db.define('rectangles', {
         primaryKey: true,
         allowNull: false,
     },
+    template_id: {
+        type: DataTypes.BIGINT,
+        allowNull: false
+    },
     name: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    rectangle: {
+    height: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    width: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    xAxis: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    yAxis: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    stroke: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 },
     {
         timestamps: true,
