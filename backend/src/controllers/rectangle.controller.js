@@ -7,7 +7,7 @@ const getRectangle = async (req, res) => {
         // console.log(template_id)
         const rect = await Rectangle.findAll(
             {
-                attributes: ["id", "template_id", "height", "width", "xAxis", "yAxis", "stroke", "name"],
+                attributes: ["id", "template_id", "height", "width", "x", "y", "stroke", "name"],
                 // where: { template_id: template_id }
             }
         )
@@ -26,7 +26,7 @@ const getRectanglebyTemplate = async (req, res) => {
         // console.log(template_id)
         const rect = await Rectangle.findAll(
             {
-                attributes: ["id", "template_id", "height", "width", "xAxis", "yAxis", "stroke", "name"],
+                attributes: ["id", "template_id", "height", "width", "x", "y", "stroke", "name"],
                 where: { template_id: template_id }
             }
         )
@@ -43,37 +43,40 @@ const createUpdateRect = async (req, res) => {
 
     try {
         const reactData = req.body
+        console.log(reactData)
         reactData.map(async (data) => {
-            if(data.x == null){
-                return
-            }
             const rect = await Rectangle.findOne(
                 {
-                    where: { name: data.id }
+                    where: { id: data.id }
+                }
+            )
+            const rect1 = await Rectangle.findOne(
+                {
+                    where: { name: String(data.id) }
                 }
             )
 
-            if (rect) {
+            if (rect || rect1) {
                 const updateRect = await Rectangle.update({
                     height: data.height,
                     width: data.width,
-                    xAxis: data.xAxis,
-                    yAxis: data.yAxis,
-                }, { where: { name: data.id } })
-                return res.status(200).json({ success: true })
+                    x: data.x,
+                    y: data.y,
+                }, { where: rect?{id: data.id} : {name: String(data.id) } })
+                // return res.status(200).json({ success: true })
             } else {
                 const createRect = await Rectangle.create({
                     height: data.height,
                     width: data.width,
-                    xAxis: data.x,
-                    yAxis: data.y,
+                    x: data.x,
+                    y: data.y,
                     stroke: data.stroke,
-                    name: data.id,
+                    name: String(data.id),
                     template_id: data.template_id
                 })
             }
-            return res.status(200).json({ success: true })
         })
+        return res.status(200).json({ success: true })
 
     } catch (error) {
         return res.status(500).json({
@@ -83,4 +86,22 @@ const createUpdateRect = async (req, res) => {
     }
 }
 
-module.exports = { getRectangle, createUpdateRect, getRectanglebyTemplate }
+const removeRectangle = async (req, res) => {
+
+    try {
+        const id = req.params.id
+        const rect = await Rectangle.destroy(
+            {
+                where: { id: id }
+            }
+        )
+        return res.status(200).json({ success: true, data: rect })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+module.exports = { getRectangle, createUpdateRect, getRectanglebyTemplate, removeRectangle }

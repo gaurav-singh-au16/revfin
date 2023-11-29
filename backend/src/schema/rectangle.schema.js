@@ -25,11 +25,11 @@ const Rectangle = db.define('rectangles', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    xAxis: {
+    x: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    yAxis: {
+    y: {
         type: DataTypes.STRING,
         allowNull: false
     },

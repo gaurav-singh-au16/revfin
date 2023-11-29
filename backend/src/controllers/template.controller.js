@@ -1,3 +1,4 @@
+const Rectangle = require("../schema/rectangle.schema");
 const Template = require("../schema/template.schema")
 const multer = require('multer');
 
@@ -66,5 +67,29 @@ const addTemplate = async (req, res) => {
     }
 };
 
+const removeTemplate = async (req, res) => {
+    try {
+        const id = req.params.id
+        const template = await Template.destroy({
+            where: {id : id}
+        })
+        const rect = await Rectangle.findAll({
+            where: {template_id: id}
+        })
+        rect.map(async(res) => {
+            const rectangle = await Rectangle.destroy({
+                where: {id: res.template_id}
+            })
 
-module.exports = { getTemplate, addTemplate }
+        })
+        return res.status(200).json({ success: true, data: template })
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        })
+    }
+}
+
+
+module.exports = { getTemplate, addTemplate, removeTemplate }
