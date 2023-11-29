@@ -13,9 +13,9 @@ const Canvas = forwardRef((props, ref) => {
     // const initialRectangles = [];
     const [rectangles, setRectangles] = React.useState([]);
     const [selectedId, selectShape] = React.useState(null);
-    console.log(rectangles)
+    // console.log(rectangles)
     const addNewRect = () => {
-        console.log('Function in ComponentA is called');
+        // console.log('Function in ComponentA is called');
         const newRect = {
             x: 50,
             y: 50,
@@ -58,25 +58,29 @@ const Canvas = forwardRef((props, ref) => {
 
     useEffect(() => {
         updateRectangle()
-    }, [rectangles.length != 0])
+    }, [rectangles])
 
     useEffect(() => {
         drawRectangle()
-    }, [props.template_id != undefined])
+    }, [props.template_id])
 
     const updateRectangle = () => {
-        
-        axios.post('http://localhost:3001/api/create-update-rectangle', rectangles)
-        .then((response) => {
+        // console.log(rectangles)
+        if(rectangles.length !== 0){
+            axios.post('/api/create-update-rectangle', rectangles)
+            .then((response) => {
+    
+            })
+            .catch((error) => {
+            console.log(error)
         })
-        .catch((error) => {
-        console.log(error)
-    })
+        }
     }
 
     const drawRectangle = () => {
-        axios.get(`http://localhost:3001/api/rectangle/${props.template_id}`, rectangles)
+        axios.get(`/api/rectangle/${props.template_id}`)
         .then((response) => {
+            
             setRectangles(response.data.data)
         })
         .catch((error) => {

@@ -11,21 +11,21 @@ const ImageUpload = () => {
     const handleImageUpload = () => {
         const formData = new FormData();
         formData.append('image', image);
-        console.log(formData)
+        // console.log(formData)
 
-        axios.post('http://localhost:3001/api/add-template', formData, {
+        axios.post('/api/add-template', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
         });
     };
 
     return (
         <div>
-            <input type="file" onChange={handleImageChange} />
-            <button onClick={handleImageUpload}>Upload Image</button>
+            <input className='form' type="file" onChange={handleImageChange}  accept=".png, .jpg, .jpeg"/>
+            <button className='form-control' onClick={handleImageUpload}>Upload Image</button>
         </div>
     );
 };

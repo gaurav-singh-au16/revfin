@@ -13,7 +13,7 @@ const Home = () => {
   }, [])
 
   const getSavedTemplates = () => {
-    axios.get('http://localhost:3001/api/template')
+    axios.get('/api/template')
     .then((response) => {
       setTemplate(response.data.data);
     })
@@ -22,7 +22,7 @@ const Home = () => {
     })
   }
   const getSavedRectangle = () => {
-    axios.get('http://localhost:3001/api/rectangle')
+    axios.get('/api/rectangle')
     .then((response) => {
       setRectangle(response.data.data);
     })
@@ -31,7 +31,7 @@ const Home = () => {
     })
   }
   
-  console.log(rectangle)
+  // console.log(rectangle)
   return (
     <>
       <Layout template = {template} rectangle = {rectangle}/>

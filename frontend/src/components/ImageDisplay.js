@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Stage, Layer, Image } from 'react-konva';
+import { Image } from 'react-konva';
 
 const ImageDisplay = (props) => {
   const [image, setImage] = useState(null);

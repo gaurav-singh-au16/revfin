@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react'
 import Canvas from './canvas'
 import ImageUpload from './ImageUpload'
-import { Navbar, Nav, Button } from "react-bootstrap";
+import { Navbar, Button } from "react-bootstrap";
 
 const Template = (props) => {
 
-  const initialTemplate = props.template == undefined ? [] : props.template
-  const initialRectangle = props.rectangle == undefined ? [] : props.rectangle
-  console.log(initialRectangle)
+  const initialTemplate = props.template === undefined ? [] : props.template
+  const initialRectangle = props.rectangle === undefined ? [] : props.rectangle
+  // console.log(initialRectangle)
   // const [template, setTemplate] = useState(props.template)
   const [rect, setRect] = useState([
     {
@@ -27,23 +27,21 @@ const Template = (props) => {
       id: 2,
     },
   ])
-  const [imageData, setImageData] = useState({
-    id: 1,
-    image: 'buffer image'
-  })
+  
   const canvasRef = useRef();
 
   const addRectangle = () => {
     canvasRef.current.addNewRect();
   };
 
-  const [imageBuffer, setImageBuffer] = useState(null)
+  const [imageBuffer, setImageBuffer] = useState(null )
   const [templateId, setTemplateId] = useState('')
 
   const handleState = (image, id) => {
     setImageBuffer(image)
     setTemplateId(id)
   }
+
 
   return (
     <>
@@ -69,10 +67,10 @@ const Template = (props) => {
             <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={()=>handleState(data.image, data.id)}>
               {`Template ${idx + 1}`}
               <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h2>
-              {initialRectangle.map((rect, idx) => (
-                rect.template_id == data.id?
-                <h4 className='h6 mx-4' style={{ cursor: "pointer" }}>
-                {`Rectangle ${idx + 1}`}
+              {initialRectangle.map((rect) => (
+                rect.template_id === data.id?
+                <h4 className='fs-6 fw-light mx-3' style={{ cursor: "pointer" }}>
+                {`Template ${idx + 1} Rect`}
                 <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h4> : ''
               ))}
           </>
