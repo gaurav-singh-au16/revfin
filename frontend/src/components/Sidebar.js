@@ -3,16 +3,10 @@ import Canvas from './canvas'
 import ImageUpload from './ImageUpload'
 import { Navbar, Nav, Button } from "react-bootstrap";
 
-const Template = () => {
+const Template = (props) => {
 
-  const [template, setTemplate] = useState([
-    {
-      id: 1, image: ','
-    },
-    {
-      id: 1, image: ','
-    },
-  ])
+  const initialTemplate = props.template == undefined ? [] : props.template
+  // const [template, setTemplate] = useState(props.template)
   const [rect, setRect] = useState([
     {
       x: 50,
@@ -41,6 +35,9 @@ const Template = () => {
     canvasRef.current.addNewRect();
   };
 
+  const [imageBuffer, setImageBuffer] = useState(null)
+
+
   return (
     <>
       <div className="topnav">
@@ -51,8 +48,8 @@ const Template = () => {
           variant="dark"
           className="topnav justify-content-center"
         >
-          
-        <Navbar.Brand href="" className=''>Image Annotate</Navbar.Brand>
+
+          <Navbar.Brand href="" className=''>Image Annotate</Navbar.Brand>
           <Button onClick={addRectangle}>Add Rectangle</Button>
           <ImageUpload />
         </Navbar>
@@ -60,12 +57,16 @@ const Template = () => {
 
 
       <div className='left-panel mt-5'>
-        {template.map((data, idx) => (
-          <h2>{`Template ${idx}`}</h2>
+        {initialTemplate.map((data, idx) => (
+          <>
+            <h2 className='form-control' style={{ cursor: "pointer" }} onClick={() => setImageBuffer(data.image)}>
+              {`Template ${idx + 1}`}
+              <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h2>
+          </>
         ))}
       </div>
       <div className='right-panel'>
-        <Canvas imageData={imageData} rectData={rect} ref={canvasRef} />
+        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} />
       </div>
     </>
   )

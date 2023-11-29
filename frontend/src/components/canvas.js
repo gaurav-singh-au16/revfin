@@ -7,8 +7,7 @@ import ImageDisplay from './ImageDisplay';
 
 
 const Canvas = forwardRef((props, ref) => {
-    console.log(props)
-    
+    // console.log(props)
     // const initialRectangles = [];
     const [rectangles, setRectangles] = React.useState([]);
     const [selectedId, selectShape] = React.useState(null);
@@ -60,7 +59,10 @@ const Canvas = forwardRef((props, ref) => {
             onTouchStart={checkDeselect}
         >
             <Layer>
+                {props.imageData?
                 <ImageDisplay imagesData={props.imageData}/>
+                : ''
+                }
                 {rectangles.map((rect, i) => {
                     return (
                         <Rectangle

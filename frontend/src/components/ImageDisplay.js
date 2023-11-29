@@ -1,17 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Stage, Layer, Image } from 'react-konva';
 
 const ImageDisplay = (props) => {
-  console.log(props.imagesData.id)
-  
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    if (props.imagesData) {
+      const arrayBufferView = new Uint8Array(props.imagesData.data);
+      const blob = new Blob([arrayBufferView], { type: 'image/jpeg' });
+      const dataUrl = URL.createObjectURL(blob);
+
+      const img = new window.Image();
+      img.src = dataUrl;
+
+      img.onload = () => {
+        setImage(img);
+      };
+    }
+  }, [props.imagesData]);
+
   return (
     <div>
-      {/* <label>{props.imagesData.id}</label> */}
-      {/* <h1>{id}</h1>
-      <h1>{image}</h1> */}
-      {/* <img
-        src={`data:image/png;base64,${base64ToUint8Array(props.image).toString('base64')}`}
-        alt={`Template ${props.id}`}
-      /> */}
+      {image && (
+        <Image
+          image={image}
+          width={window.innerWidth}
+          height={window.innerHeight}
+        />
+      )}
+
     </div>
   );
 };
