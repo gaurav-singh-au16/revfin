@@ -6,6 +6,8 @@ import { Navbar, Nav, Button } from "react-bootstrap";
 const Template = (props) => {
 
   const initialTemplate = props.template == undefined ? [] : props.template
+  const initialRectangle = props.rectangle == undefined ? [] : props.rectangle
+  console.log(initialRectangle)
   // const [template, setTemplate] = useState(props.template)
   const [rect, setRect] = useState([
     {
@@ -36,7 +38,12 @@ const Template = (props) => {
   };
 
   const [imageBuffer, setImageBuffer] = useState(null)
+  const [templateId, setTemplateId] = useState('')
 
+  const handleState = (image, id) => {
+    setImageBuffer(image)
+    setTemplateId(id)
+  }
 
   return (
     <>
@@ -59,14 +66,20 @@ const Template = (props) => {
       <div className='left-panel mt-5'>
         {initialTemplate.map((data, idx) => (
           <>
-            <h2 className='form-control' style={{ cursor: "pointer" }} onClick={() => setImageBuffer(data.image)}>
+            <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={()=>handleState(data.image, data.id)}>
               {`Template ${idx + 1}`}
               <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h2>
+              {initialRectangle.map((rect, idx) => (
+                rect.template_id == data.id?
+                <h4 className='h6 mx-4' style={{ cursor: "pointer" }}>
+                {`Rectangle ${idx + 1}`}
+                <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h4> : ''
+              ))}
           </>
         ))}
       </div>
       <div className='right-panel'>
-        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} />
+        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} template_id={templateId}/>
       </div>
     </>
   )

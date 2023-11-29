@@ -5,9 +5,11 @@ import axios from 'axios'
 const Home = () => {
 
   const [template, setTemplate] = useState([])
+  const [rectangle, setRectangle] = useState([])
 
   useEffect(() => {
     getSavedTemplates()
+    getSavedRectangle()
   }, [])
 
   const getSavedTemplates = () => {
@@ -19,11 +21,20 @@ const Home = () => {
       console.log(error)
     })
   }
+  const getSavedRectangle = () => {
+    axios.get('http://localhost:3001/api/rectangle')
+    .then((response) => {
+      setRectangle(response.data.data);
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
   
-  // console.log(template)
+  console.log(rectangle)
   return (
     <>
-      <Layout template = {template}/>
+      <Layout template = {template} rectangle = {rectangle}/>
     </>
   )
 }

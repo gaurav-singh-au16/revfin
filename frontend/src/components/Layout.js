@@ -4,11 +4,11 @@ import Sidebar from './Sidebar'
 import Viewport from './Viewport'
 
 const Layout = (props) => {
-    // console.log(props)
+    console.log(props)
     return (
         <div className='App'>
             <Header />
-            <Sidebar template= {props.template}/>
+            <Sidebar template= {props.template} rectangle={props.rectangle}/>
             <Viewport />
             {props.children}
         </div>
