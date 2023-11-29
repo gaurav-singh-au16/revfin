@@ -4,7 +4,7 @@ import Sidebar from './Sidebar'
 import Viewport from './Viewport'
 
 const Layout = (props) => {
-    console.log(props)
+    // console.log(props)
     return (
         <div className='App'>
             <Header />

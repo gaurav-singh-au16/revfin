@@ -1,12 +1,37 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Canvas from './canvas'
 import ImageUpload from './ImageUpload'
 import { Navbar, Button } from "react-bootstrap";
+import axios from 'axios';
 
 const Template = (props) => {
 
-  const initialTemplate = props.template === undefined ? [] : props.template
-  const initialRectangle = props.rectangle === undefined ? [] : props.rectangle
+  const [template, setTemplate] = useState([])
+  const [rectangle, setRectangle] = useState([])
+
+  useEffect(() => {
+    getSavedTemplates()
+    getSavedRectangle()
+  }, [])
+
+  const getSavedTemplates = () => {
+    axios.get('/api/template')
+      .then((response) => {
+        setTemplate(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+  const getSavedRectangle = () => {
+    axios.get('/api/rectangle')
+      .then((response) => {
+        setRectangle(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
   // console.log(initialRectangle)
   // const [template, setTemplate] = useState(props.template)
   const [rect, setRect] = useState([
@@ -27,19 +52,40 @@ const Template = (props) => {
       id: 2,
     },
   ])
-  
+
   const canvasRef = useRef();
 
   const addRectangle = () => {
     canvasRef.current.addNewRect();
   };
 
-  const [imageBuffer, setImageBuffer] = useState(null )
+  const [imageBuffer, setImageBuffer] = useState(null)
   const [templateId, setTemplateId] = useState('')
 
   const handleState = (image, id) => {
     setImageBuffer(image)
     setTemplateId(id)
+  }
+
+  const removeRect = (id) => {
+    axios.get(`/api/remove-rectangle/${id}`)
+      .then((res) => {
+        getSavedRectangle()
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  const removeTemplate = (id) => {
+    axios.get(`/api/remove-template/${id}`)
+      .then((res) => {
+        getSavedTemplates()
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
 
@@ -62,22 +108,22 @@ const Template = (props) => {
 
 
       <div className='left-panel mt-5'>
-        {initialTemplate.map((data, idx) => (
-          <>
-            <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={()=>handleState(data.image, data.id)}>
+        {template.map((data, idx) => (
+          <div className='mt-5' key={idx}>
+            <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={() => handleState(data.image, data.id)}>
               {`Template ${idx + 1}`}
-              <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h2>
-              {initialRectangle.map((rect) => (
-                rect.template_id === data.id?
+              <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeTemplate(data.id)}>X</span></h2>
+            {rectangle.map((rect) => (
+              rect.template_id === data.id ?
                 <h4 className='fs-6 fw-light mx-3' style={{ cursor: "pointer" }}>
-                {`Template ${idx + 1} Rect`}
-                <span className='mx-3 text-danger' style={{ cursor: "pointer" }}>X</span></h4> : ''
-              ))}
-          </>
+                  {`Template ${idx + 1} Rect`}
+                  <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeRect(rect.id)}>X</span></h4> : ''
+            ))}
+          </div>
         ))}
       </div>
       <div className='right-panel'>
-        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} template_id={templateId}/>
+        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} template_id={templateId} />
       </div>
     </>
   )

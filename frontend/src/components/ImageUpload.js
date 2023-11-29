@@ -18,6 +18,7 @@ const ImageUpload = () => {
                 'Content-Type': 'multipart/form-data',
             }
         }).then((response) => {
+            
             // console.log(response.data);
         });
     };
