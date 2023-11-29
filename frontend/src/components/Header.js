@@ -11,11 +11,11 @@ const Header = () => {
 
   return (
     <>
-      <button onClick={addRectangle}>Add Rectangle</button>
-      <ImageUpload />
-    <div className='right-panel'>
-      <Canvas ref={canvasRef} />
-    </div>
+      {/* <button onClick={addRectangle}>Add Rectangle</button>
+      <ImageUpload /> */}
+      {/* <div className='right-panel'>
+        <Canvas ref={canvasRef} />
+      </div> */}
     </>
   );
 };
