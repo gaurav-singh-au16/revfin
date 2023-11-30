@@ -9,6 +9,27 @@ const Template = (props) => {
   const [template, setTemplate] = useState([])
   const [rectangle, setRectangle] = useState([])
 
+  const [image, setImage] = useState(null);
+
+    const handleImageChange = (e) => {
+        setImage(e.target.files[0]);
+    };
+
+    const handleImageUpload = () => {
+        const formData = new FormData();
+        formData.append('image', image);
+        // console.log(formData)
+
+        axios.post('/api/add-template', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then((response) => {
+          getSavedTemplates()
+            // console.log(response.data);
+        });
+    };
+
   useEffect(() => {
     getSavedTemplates()
     getSavedRectangle()
@@ -57,6 +78,7 @@ const Template = (props) => {
 
   const addRectangle = () => {
     canvasRef.current.addNewRect();
+    getSavedRectangle()
   };
 
   const [imageBuffer, setImageBuffer] = useState(null)
@@ -102,7 +124,10 @@ const Template = (props) => {
 
           <Navbar.Brand href="" className=''>Image Annotate</Navbar.Brand>
           <Button onClick={addRectangle}>Add Rectangle</Button>
-          <ImageUpload />
+          <div>
+            <input className='form' type="file" onChange={handleImageChange}  accept=".png, .jpg, .jpeg"/>
+            <button className='form-control' onClick={handleImageUpload}>Upload Image</button>
+        </div>
         </Navbar>
       </div>
 

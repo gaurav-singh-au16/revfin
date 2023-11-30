@@ -25,19 +25,9 @@ const Canvas = forwardRef((props, ref) => {
             id: uuidv4(),
             template_id: props.template_id
           };
-      
+          
           setRectangles(prevRectangles => [...prevRectangles, newRect]);
-        // initialRectangles.push(
-        //     {
-        //         x: 50,
-        //         y: 50,
-        //         width: 100,
-        //         height: 100,
-        //         // fill: 'red',
-        //         stroke: "black",
-        //         id: 'rect1',
-        //       }
-        // )
+       
     };
     // console.log(initialRectangles)
 
@@ -80,7 +70,6 @@ const Canvas = forwardRef((props, ref) => {
     const drawRectangle = () => {
         axios.get(`/api/rectangle/${props.template_id}`)
         .then((response) => {
-            
             setRectangles(response.data.data)
         })
         .catch((error) => {
