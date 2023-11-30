@@ -8,11 +8,11 @@ const app = express()
 
 app.use(express.json())
 const corsOptions = {
-    origin: 'https://revfin-27hp.vercel.app/', 
+    origin: 'https://revfin-27hp.vercel.app', 
     methods: 'POST, GET, OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,
-};
+  };
 
 app.use(cors(corsOptions));
 
