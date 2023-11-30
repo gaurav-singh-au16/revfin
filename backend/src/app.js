@@ -7,13 +7,13 @@ const router = require('./routes')
 const app = express()
 
 app.use(express.json())
+
 const corsOptions = {
-    origin: 'https://revfin-27hp.vercel.app', 
+    origin: 'https://revfin-27hp.vercel.app/', 
     methods: 'POST, GET, OPTIONS',
     credentials: true,
     optionsSuccessStatus: 204,
-  };
-
+};
 app.use(cors(corsOptions));
 
 // Handle Preflight (OPTIONS) requests
@@ -21,7 +21,7 @@ app.options('*', cors(corsOptions));
 app.use(router);
 
 // db connection
-db.sync({ alter: true }).then(() => {
+db.sync({alter: true}).then(() => {
     console.log('Database Connected!')
 }).catch((err) => {
     console.log('Error => ', err)
