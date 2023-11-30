@@ -8,37 +8,48 @@ const Template = (props) => {
 
   const [template, setTemplate] = useState([])
   const [rectangle, setRectangle] = useState([])
+  const [isLoad, setIsLoad] = useState(false)
 
   const [image, setImage] = useState(null);
 
-    const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-    };
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
 
-    const handleImageUpload = () => {
-        const formData = new FormData();
-        formData.append('image', image);
-        // console.log(formData)
-
-        axios.post('https://revfin-six.vercel.app/api/add-template', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            }
-        }).then((response) => {
-          getSavedTemplates()
-            // console.log(response.data);
-        });
-    };
+  const handleImageUpload = () => {
+    
+    if(!image){
+      return (alert('Choose the image first'))
+    }else{
+      const formData = new FormData();
+      
+      formData.append('image', image);
+      // console.log(formData)
+  
+      axios.post('https://revfin-six.vercel.app/api/add-template', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then((response) => {
+        getSavedTemplates()
+        alert('Image Uploaded Successfully')
+        // console.log(response.data);
+      });
+    }
+  };
 
   useEffect(() => {
+    // setIsLoad(true)
     getSavedTemplates()
     getSavedRectangle()
+    
   }, [])
 
   const getSavedTemplates = () => {
     axios.get('https://revfin-six.vercel.app/api/template')
       .then((response) => {
         setTemplate(response.data.data);
+        
       })
       .catch((error) => {
         console.log(error)
@@ -113,43 +124,46 @@ const Template = (props) => {
 
   return (
     <>
-      <div className="topnav">
-        <Navbar
-          fixed="top"
-          expand="lg"
-          bg="dark"
-          variant="dark"
-          className="topnav justify-content-center"
-        >
+      {isLoad ?
+        <h4>Loading...</h4> :
+        <>
+          <div className="topnav">
+            <Navbar
+              fixed="top"
+              expand="lg"
+              bg="dark"
+              variant="dark"
+              className="topnav justify-content-center"
+            >
 
-          <Navbar.Brand href="" className=''>Image Annotate</Navbar.Brand>
-          <Button onClick={addRectangle}>Add Rectangle</Button>
-          <div>
-            <input className='form' type="file" onChange={handleImageChange}  accept=".png, .jpg, .jpeg"/>
-            <button className='form-control' onClick={handleImageUpload}>Upload Image</button>
-        </div>
-        </Navbar>
-      </div>
-
-
-      <div className='left-panel mt-5'>
-        {template.map((data, idx) => (
-          <div className='mt-5' key={idx}>
-            <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={() => handleState(data.image, data.id)}>
-              {`Template ${idx + 1}`}
-              <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeTemplate(data.id)}>X</span></h2>
-            {rectangle.map((rect) => (
-              rect.template_id === data.id ?
-                <h4 className='fs-6 fw-light mx-3' style={{ cursor: "pointer" }}>
-                  {`Template ${idx + 1} Rect`}
-                  <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeRect(rect.id)}>X</span></h4> : ''
+              <Navbar.Brand href="" className=''>Image Annotate</Navbar.Brand>
+              <Button onClick={addRectangle}>Add Rectangle</Button>
+              <div>
+                <input className='form' type="file" onChange={handleImageChange} accept=".png, .jpg, .jpeg" />
+                <button className='form-control' onClick={handleImageUpload}>Upload Image</button>
+              </div>
+            </Navbar>
+          </div>
+          <div className='left-panel mt-5'>
+            {template.map((data, idx) => (
+              <div className='mt-5' key={idx}>
+                <h2 className='form-control mt-2' style={{ cursor: "pointer" }} onClick={() => handleState(data.image, data.id)}>
+                  {`Template ${idx + 1}`}
+                  <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeTemplate(data.id)}>X</span></h2>
+                {rectangle.map((rect) => (
+                  rect.template_id === data.id ?
+                    <h4 className='fs-6 fw-light mx-3' style={{ cursor: "pointer" }}>
+                      {`Template ${idx + 1} Rect`}
+                      <span className='mx-3 text-danger' style={{ cursor: "pointer" }} onClick={() => removeRect(rect.id)}>X</span></h4> : ''
+                ))}
+              </div>
             ))}
           </div>
-        ))}
-      </div>
-      <div className='right-panel'>
-        <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} template_id={templateId} />
-      </div>
+          <div className='right-panel'>
+            <Canvas imageData={imageBuffer} rectData={rect} ref={canvasRef} template_id={templateId} />
+          </div>
+        </>
+      }
     </>
   )
 }
