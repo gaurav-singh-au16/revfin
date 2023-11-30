@@ -57,7 +57,7 @@ const Canvas = forwardRef((props, ref) => {
     const updateRectangle = () => {
         // console.log(rectangles)
         if(rectangles.length !== 0){
-            axios.post('/api/create-update-rectangle', rectangles)
+            axios.post('https://revfin-six.vercel.app/api/create-update-rectangle', rectangles)
             .then((response) => {
     
             })
@@ -68,7 +68,7 @@ const Canvas = forwardRef((props, ref) => {
     }
 
     const drawRectangle = () => {
-        axios.get(`/api/rectangle/${props.template_id}`)
+        axios.get(`https://revfin-six.vercel.app/api/rectangle/${props.template_id}`)
         .then((response) => {
             setRectangles(response.data.data)
         })

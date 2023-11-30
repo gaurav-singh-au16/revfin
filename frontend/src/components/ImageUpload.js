@@ -13,7 +13,7 @@ const ImageUpload = () => {
         formData.append('image', image);
         // console.log(formData)
 
-        axios.post('/api/add-template', formData, {
+        axios.post('https://revfin-six.vercel.app/api/add-template', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }

@@ -20,7 +20,7 @@ const Template = (props) => {
         formData.append('image', image);
         // console.log(formData)
 
-        axios.post('/api/add-template', formData, {
+        axios.post('https://revfin-six.vercel.app/api/add-template', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -36,7 +36,7 @@ const Template = (props) => {
   }, [])
 
   const getSavedTemplates = () => {
-    axios.get('/api/template')
+    axios.get('https://revfin-six.vercel.app/api/template')
       .then((response) => {
         setTemplate(response.data.data);
       })
@@ -45,7 +45,7 @@ const Template = (props) => {
       })
   }
   const getSavedRectangle = () => {
-    axios.get('/api/rectangle')
+    axios.get('https://revfin-six.vercel.app/api/rectangle')
       .then((response) => {
         setRectangle(response.data.data);
       })
@@ -90,7 +90,7 @@ const Template = (props) => {
   }
 
   const removeRect = (id) => {
-    axios.get(`/api/remove-rectangle/${id}`)
+    axios.get(`https://revfin-six.vercel.app/api/remove-rectangle/${id}`)
       .then((res) => {
         getSavedRectangle()
       })
@@ -100,7 +100,7 @@ const Template = (props) => {
   }
 
   const removeTemplate = (id) => {
-    axios.get(`/api/remove-template/${id}`)
+    axios.get(`https://revfin-six.vercel.app/api/remove-template/${id}`)
       .then((res) => {
         getSavedTemplates()
 
